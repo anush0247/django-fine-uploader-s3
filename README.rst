@@ -5,8 +5,6 @@ Django Fine Uploader S3
 .. image:: https://badge.fury.io/py/django-fine-uploader-s3.png
     :target: https://badge.fury.io/py/django-fine-uploader-s3
 
-.. image:: https://travis-ci.org/anush0247/django-fine-uploader-s3.png?branch=master
-    :target: https://travis-ci.org/anush0247/django-fine-uploader-s3
 
 Your project description goes here
 
@@ -38,7 +36,7 @@ Then use it in a project::
         ...
     ]
 
-Refer fine-uploader.html
+Refer `fine-uploader.html`_
 
 S3 Bucket Configuration:
 -----------------------
@@ -79,3 +77,4 @@ Tools used in rendering this package:
 .. _Cookiecutter: https://github.com/audreyr/cookiecutter
 .. _`cookiecutter-djangopackage`: https://github.com/pydanny/cookiecutter-djangopackage
 .. _django-fine-uploader-s3: https://github.com/FineUploader/server-examples/blob/master/python/django-fine-uploader-s3
+.. _fine-uploader.html: https://github.com/anush0247/django-fine-uploader-s3/blob/master/django_fine_uploader_s3/fine-uploader.html
