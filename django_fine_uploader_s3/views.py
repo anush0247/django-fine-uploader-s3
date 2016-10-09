@@ -25,15 +25,17 @@ except ImportError, e:
 
 @csrf_exempt
 def success_redirect_endpoint(request):
-    """ This is where the upload will snd a POST request after the 
+    """ This is where the upload will snd a POST request after the
     file has been stored in S3.
     """
 
     if request.method == "POST":
         bucket_name = request.POST.get('bucket')
         key_name = request.POST.get('key')
-        temp_link = "https://%s.s3.amazonaws.com/%s" %( bucket_name, key_name)
-
+        cloud_front = getattr(settings, 'AWS_CLOUDFRONT_DOMAIN', None)
+        temp_link = "https://%s.s3.amazonaws.com/%s" % (bucket_name, key_name)
+        if cloud_front:
+            temp_link = "https://%s/%s" % (cloud_front, key_name)
         content = {
             "tempLink": temp_link
         }
@@ -53,8 +55,8 @@ def handle_POST(request):
         request_payload = json.loads(request.body)
         headers = request_payload.get('headers', None)
         if headers:
-            # The presence of the 'headers' property in the request payload 
-            # means this is a request to sign a REST/multipart request 
+            # The presence of the 'headers' property in the request payload
+            # means this is a request to sign a REST/multipart request
             # and NOT a policy document
             response_data = sign_headers(headers)
         else:
@@ -96,7 +98,7 @@ def make_response(status=200, content=None):
 
 def is_valid_policy(policy_document):
     """ Verify the policy document has not been tampered with client-side
-    before sending it off. 
+    before sending it off.
     """
     # bucket = settings.AWS_STORAGE_BUCKET_NAME
     # parsed_max_size = settings.AWS_MAX_SIZE

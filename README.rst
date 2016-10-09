@@ -10,11 +10,6 @@ Django Fine Uploader S3
 
 Your project description goes here
 
-Documentation
--------------
-
-The full documentation is at https://django-fine-uploader-s3.readthedocs.org.
-
 Quickstart
 ----------
 
@@ -24,23 +19,53 @@ Install Django Fine Uploader S3::
 
 Then use it in a project::
 
-    import django_fine_uploader_s3
+    # settings.py
+    installed_apps = [
+        ...
+        'django_fine_uploader_s3',
+        ...
+    ]
 
-Features
---------
+    AWS_ACCESS_KEY_ID = os.environ.get("AWS_ACCESS_KEY_ID")
+    AWS_SECRET_ACCESS_KEY = os.environ.get("AWS_SECRET_ACCESS_KEY")
+    AWS_CLOUDFRONT_DOMAIN = os.environ.get("AWS_CLOUDFRONT_DOMAIN")
+    AWS_STORAGE_BUCKET_NAME = os.environ.get("AWS_STORAGE_BUCKET_NAME")
 
-* TODO
+    # urls.py
+    urlpatterns = [
+        ...
+         url(r'^fine-uploader/', include('django_fine_uploader_s3.urls')),
+        ...
+    ]
 
-Running Tests
---------------
+Refer fine-uploader.html
 
-Does the code actually work?
+S3 Bucket Configuration:
+-----------------------
 
 ::
 
-    source <YOURVIRTUALENV>/bin/activate
-    (myenv) $ pip install -r requirements_test.txt
-    (myenv) $ python runtests.py
+    <?xml version="1.0" encoding="UTF-8"?>
+    <CORSConfiguration xmlns="http://s3.amazonaws.com/doc/2006-03-01/">
+        <CORSRule>
+            <AllowedOrigin>*</AllowedOrigin>
+            <AllowedMethod>GET</AllowedMethod>
+            <MaxAgeSeconds>3000</MaxAgeSeconds>
+            <AllowedHeader>Authorization</AllowedHeader>
+        </CORSRule>
+        <CORSRule>
+            <AllowedOrigin>*</AllowedOrigin>
+            <AllowedMethod>HEAD</AllowedMethod>
+            <AllowedMethod>GET</AllowedMethod>
+            <AllowedMethod>PUT</AllowedMethod>
+            <AllowedMethod>POST</AllowedMethod>
+            <AllowedMethod>DELETE</AllowedMethod>
+            <ExposeHeader>ETag</ExposeHeader>
+            <ExposeHeader>x-amz-meta-custom-header</ExposeHeader>
+            <AllowedHeader>*</AllowedHeader>
+        </CORSRule>
+    </CORSConfiguration>
+
 
 Credits
 ---------
@@ -49,6 +74,8 @@ Tools used in rendering this package:
 
 *  Cookiecutter_
 *  `cookiecutter-djangopackage`_
+*  `django-fine-uploader-s3`_
 
 .. _Cookiecutter: https://github.com/audreyr/cookiecutter
 .. _`cookiecutter-djangopackage`: https://github.com/pydanny/cookiecutter-djangopackage
+.. _django-fine-uploader-s3: https://github.com/FineUploader/server-examples/blob/master/python/django-fine-uploader-s3

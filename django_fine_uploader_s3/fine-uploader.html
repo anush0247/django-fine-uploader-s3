@@ -116,20 +116,20 @@
             element: document.getElementById('fine-uploader-s3'),
             template: 'qq-template-s3',
             request: {
-                endpoint: "dolphino-backend-media-static.s3.amazonaws.com",
-                accessKey: "AKIAJILHSUTLRL4DQ7FQ"
+                endpoint: "<your_bucket_name>.s3.amazonaws.com",
+                accessKey: "<aws_access_key>" // same os os.environ["AWS_ACCESS_KEY_ID"]
             },
             signature: {
-                endpoint: "http://127.0.0.1:8000/fine-uploader/s3/signature"
+                endpoint: "http://127.0.0.1:8000/fine-uploader/s3/signature" // signature url endpoint
             },
             uploadSuccess: {
-                endpoint: "http://127.0.0.1:8000/fine-uploader/s3/success",
+                endpoint: "http://127.0.0.1:8000/fine-uploader/s3/success", // success url endpoint
                 params: {
                     isBrowserPreviewCapable: qq.supportedFeatures.imagePreviews
                 }
             },
             iframeSupport: {
-                localBlankPagePath: "/server/success.html"
+                localBlankPagePath: "http://fineuploader.com/server/success.html"
             },
             cors: {
                 expected: true
@@ -143,7 +143,7 @@
             deleteFile: {
                 enabled: true,
                 method: "POST",
-                endpoint: "http://127.0.0.1:8000/fine-uploader/s3/delete"
+                endpoint: "http://127.0.0.1:8000/fine-uploader/s3/delete" // delete url endpoint
             },
             validation: {
                 itemLimit: 5,
@@ -161,7 +161,8 @@
                     var filename = s3Uploader.getName(fileId);
                     var uuid = s3Uploader.getUuid(fileId);
                     var ext = filename.substr(filename.lastIndexOf('.') + 1);
-                    return  'web_uploads/' + uuid + '-'+ filename;
+                    var folder_name = 'web_uploads/';
+                    return folder_name  + uuid + '-'+ filename; // web_uploads -- folder name
                 }
             },
             callbacks: {
