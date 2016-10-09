@@ -27,7 +27,7 @@ if sys.argv[-1] == 'tag':
     os.system("git push --tags")
     sys.exit()
 
-readme = open('README.rst').read()
+readme = ''
 history = open('HISTORY.rst').read().replace('.. :changelog:', '')
 
 setup(
