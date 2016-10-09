@@ -26,6 +26,8 @@ android_jars/
 ipython/
 static/
 
+build/
+dist/
 
 media/
 
