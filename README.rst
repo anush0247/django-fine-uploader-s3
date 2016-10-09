@@ -65,6 +65,11 @@ S3 Bucket Configuration:
     </CORSConfiguration>
 
 
+Other Projects:
+--------------
+
+* `zappa_file_widget`_
+
 Credits
 ---------
 
@@ -78,3 +83,4 @@ Tools used in rendering this package:
 .. _`cookiecutter-djangopackage`: https://github.com/pydanny/cookiecutter-djangopackage
 .. _django-fine-uploader-s3: https://github.com/FineUploader/server-examples/blob/master/python/django-fine-uploader-s3
 .. _fine-uploader.html: https://github.com/anush0247/django-fine-uploader-s3/blob/master/django_fine_uploader_s3/fine-uploader.html
+.. _zappa_file_widget: https://github.com/anush0247/zappa-file-widget
