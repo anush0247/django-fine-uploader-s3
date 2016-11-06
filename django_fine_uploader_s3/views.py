@@ -7,7 +7,7 @@ from django.conf import settings
 from django.http import HttpResponse
 from django.views.decorators.csrf import csrf_exempt
 
-AWS_MAX_SIZE = 15000000
+AWS_MAX_SIZE = 15000000000
 
 try:
     import boto
