@@ -7,6 +7,8 @@ import mimetypes
 from django.conf import settings
 from django.http import HttpResponse
 from django.views.decorators.csrf import csrf_exempt
+from rest_framework.decorators import permission_classes
+from rest_framework.permissions import IsAuthenticated
 
 AWS_MAX_SIZE = 15000000000
 
@@ -133,6 +135,7 @@ def sign_headers(headers):
     }
 
 
+@permission_classes((IsAuthenticated,))
 def sign_s3_upload(request):
     object_name = request.GET['objectName']
     folder_name = request.GET["folderName"]
