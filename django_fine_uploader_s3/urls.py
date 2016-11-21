@@ -20,5 +20,6 @@ from django_fine_uploader_s3 import views
 urlpatterns = [
     url(r'^s3/signature', views.handle_POST, name="s3_signee"),
     url(r'^s3/delete', views.handle_DELETE, name='s3_delete'),
-    url(r'^s3/success', views.success_redirect_endpoint, name="s3_success_endpoint")
+    url(r'^s3/success', views.success_redirect_endpoint, name="s3_success_endpoint"),
+    url(r'^s3/sign', views.sign_s3_upload, name="sign_s3_upload")
 ]

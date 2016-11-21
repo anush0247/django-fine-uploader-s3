@@ -2,6 +2,7 @@ import base64
 import hashlib
 import hmac
 import json
+import mimetypes
 
 from django.conf import settings
 from django.http import HttpResponse
@@ -130,3 +131,18 @@ def sign_headers(headers):
     return {
         'signature': base64.b64encode(hmac.new(settings.AWS_SECRET_ACCESS_KEY, headers, hashlib.sha1).digest())
     }
+
+
+def sign_s3_upload(request):
+    object_name = request.GET['objectName']
+    folder_name = request.GET["folderName"]
+    content_type = mimetypes.guess_type(object_name)[0]
+    bucket_name = settings.AWS_STORAGE_BUCKET_NAME
+    conn = boto.connect_s3(settings.AWS_ACCESS_KEY_ID, settings.AWS_SECRET_ACCESS_KEY)
+    signed_url = conn.generate_url(
+        300,
+        "PUT",
+        bucket_name,
+        folder_name + "/" + object_name,
+        headers={'Content-Type': content_type, 'x-amz-acl': 'public-read'})
+    return HttpResponse(json.dumps({'signedUrl': signed_url}))
