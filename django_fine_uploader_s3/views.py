@@ -1,6 +1,7 @@
 import base64
 import hashlib
 import hmac
+import uuid
 import json
 import mimetypes
 
@@ -139,6 +140,8 @@ def sign_headers(headers):
 def sign_s3_upload(request):
     object_name = request.GET['objectName']
     folder_name = request.GET["folderName"]
+    object_name = str(uuid.uuid4()) + "-" + object_name
+    key_name = folder_name + "/" + object_name
     content_type = mimetypes.guess_type(object_name)[0]
     bucket_name = settings.AWS_STORAGE_BUCKET_NAME
     conn = boto.connect_s3(settings.AWS_ACCESS_KEY_ID, settings.AWS_SECRET_ACCESS_KEY)
@@ -146,6 +149,14 @@ def sign_s3_upload(request):
         300,
         "PUT",
         bucket_name,
-        folder_name + "/" + object_name,
+        key_name,
         headers={'Content-Type': content_type, 'x-amz-acl': 'public-read'})
-    return HttpResponse(json.dumps({'signedUrl': signed_url}))
+    cloud_front = getattr(settings, 'AWS_CLOUDFRONT_DOMAIN', None)
+    cloud_front_url = "https://%s.s3.amazonaws.com/%s" % (bucket_name, key_name)
+    if cloud_front:
+        cloud_front_url = "https://%s/%s" % (cloud_front, key_name)
+    response = {
+        'signedUrl': signed_url,
+        'cloudFrontURL': cloud_front_url
+    }
+    return HttpResponse(json.dumps(response))
