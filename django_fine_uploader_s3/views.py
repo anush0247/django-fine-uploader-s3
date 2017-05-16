@@ -13,18 +13,8 @@ from rest_framework.permissions import IsAuthenticated
 
 AWS_MAX_SIZE = 15000000000
 
-try:
-    import boto
-    from boto.s3.connection import Key, S3Connection
-
-    boto.set_stream_logger('boto')
-    S3 = S3Connection(aws_access_key_id=settings.AWS_ACCESS_KEY_ID,
-                      aws_secret_access_key=settings.AWS_SECRET_ACCESS_KEY)
-except ImportError, e:
-    print("Could not import boto, the Amazon SDK for Python.")
-    print("Deleting files will not work.")
-    print("Install boto with")
-    print("$ pip install boto")
+import boto
+from boto.s3.connection import Key, S3Connection
 
 
 @csrf_exempt
@@ -75,6 +65,17 @@ def handle_DELETE(request):
     """ Handle file deletion requests. For this, we use the Amazon Python SDK,
     boto.
     """
+    try:
+
+        boto.set_stream_logger('boto')
+        S3 = S3Connection(aws_access_key_id=settings.AWS_ACCESS_KEY_ID,
+                          aws_secret_access_key=settings.AWS_SECRET_ACCESS_KEY)
+    except ImportError, e:
+        print("Could not import boto, the Amazon SDK for Python.")
+        print("Deleting files will not work.")
+        print("Install boto with")
+        print("$ pip install boto")
+
     if boto:
         bucket_name = request.POST.get('bucket')
         key_name = request.POST.get('key')
