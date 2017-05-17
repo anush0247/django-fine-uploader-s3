@@ -146,7 +146,7 @@ def sign_s3_upload(request):
     content_type = mimetypes.guess_type(object_name)[0]
     bucket_name = settings.AWS_STORAGE_BUCKET_NAME
     conn = boto.connect_s3(settings.AWS_ACCESS_KEY_ID, settings.AWS_SECRET_ACCESS_KEY)
-    signed_url = conn.generate_url(
+    signed_url = conn.generate_url_sigv4(
         300,
         "PUT",
         bucket_name,
