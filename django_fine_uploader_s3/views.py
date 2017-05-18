@@ -145,13 +145,25 @@ def sign_s3_upload(request):
     key_name = folder_name + "/" + object_name
     content_type = mimetypes.guess_type(object_name)[0]
     bucket_name = settings.AWS_STORAGE_BUCKET_NAME
-    conn = boto.connect_s3(settings.AWS_ACCESS_KEY_ID, settings.AWS_SECRET_ACCESS_KEY)
-    signed_url = conn.generate_url_sigv4(
-        300,
-        "PUT",
-        bucket_name,
-        key_name,
-        headers={'Content-Type': content_type, 'x-amz-acl': 'public-read'})
+
+    import boto3
+    from botocore.client import Config
+
+    # Get the service client with sigv4 configured
+    s3 = boto3.client('s3', aws_access_key_id=settings.AWS_ACCESS_KEY_ID,
+                      aws_secret_access_key=settings.AWS_SECRET_ACCESS_KEY, config=Config(signature_version='s3v4'))
+
+    # Generate the URL to get 'key-name' from 'bucket-name'
+    signed_url = s3.generate_presigned_url(
+        ClientMethod='put_object',
+        Params={
+            'Bucket': bucket_name,
+            'Key': key_name,
+            'ACL': 'public-read',
+            'ContentType': content_type
+        }
+    )
+
     cloud_front = getattr(settings, 'AWS_CLOUDFRONT_DOMAIN', None)
     cloud_front_url = "https://%s.s3.amazonaws.com/%s" % (bucket_name, key_name)
     if cloud_front:
