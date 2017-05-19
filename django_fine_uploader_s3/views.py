@@ -143,7 +143,7 @@ def sign_s3_upload(request):
     folder_name = request.GET["folderName"]
     object_name = str(uuid.uuid4()) + "-" + object_name
     key_name = folder_name + "/" + object_name
-    content_type = mimetypes.guess_type(object_name)[0]
+    content_type = request.GET.get("contentType", mimetypes.guess_type(object_name)[0])
     bucket_name = settings.AWS_STORAGE_BUCKET_NAME
 
     import boto3
@@ -152,6 +152,7 @@ def sign_s3_upload(request):
     # Get the service client with sigv4 configured
     s3 = boto3.client('s3', aws_access_key_id=settings.AWS_ACCESS_KEY_ID,
                       aws_secret_access_key=settings.AWS_SECRET_ACCESS_KEY, config=Config(signature_version='s3v4'))
+
 
     # Generate the URL to get 'key-name' from 'bucket-name'
     signed_url = s3.generate_presigned_url(
