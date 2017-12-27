@@ -70,7 +70,7 @@ def handle_DELETE(request):
         boto.set_stream_logger('boto')
         S3 = S3Connection(aws_access_key_id=settings.AWS_ACCESS_KEY_ID,
                           aws_secret_access_key=settings.AWS_SECRET_ACCESS_KEY)
-    except ImportError as e:
+    except ImportError, e:
         print("Could not import boto, the Amazon SDK for Python.")
         print("Deleting files will not work.")
         print("Install boto with")
@@ -85,7 +85,7 @@ def handle_DELETE(request):
             aws_key.delete()
             return make_response(200)
         except Exception as err:
-            print(err)
+            print err
             return make_response(500)
     else:
         return make_response(500)
