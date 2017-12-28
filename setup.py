@@ -1,5 +1,6 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
+from __future__ import print_function
 import os
 import sys
 
@@ -13,7 +14,7 @@ version = '0.1.14'
 if sys.argv[-1] == 'publish':
     try:
         import wheel
-        print("Wheel version: ", wheel.__version__)
+        print(("Wheel version: ", wheel.__version__))
     except ImportError:
         print('Wheel library missing. Please run "pip install wheel"')
         sys.exit()
