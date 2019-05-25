@@ -2,13 +2,14 @@
 # -*- coding: utf-8 -*-
 import os
 import sys
+from io import open
 
 try:
     from setuptools import setup
 except ImportError:
     from distutils.core import setup
 
-version = '0.1.14'
+version = '1.0.0'
 
 if sys.argv[-1] == 'publish':
     try:
@@ -32,6 +33,7 @@ history = open('HISTORY.rst').read().replace('.. :changelog:', '')
 
 setup(
     name='django-fine-uploader-s3',
+    python_requires='>=3.7',
     version=version,
     description="""Your project description goes here""",
     long_description=readme + '\n\n' + history,
@@ -53,10 +55,9 @@ setup(
         'Intended Audience :: Developers',
         'License :: OSI Approved :: BSD License',
         'Natural Language :: English',
-        'Programming Language :: Python :: 2',
-        'Programming Language :: Python :: 2.7',
         'Programming Language :: Python :: 3',
         'Programming Language :: Python :: 3.4',
         'Programming Language :: Python :: 3.5',
+        'Programming Language :: Python :: 3.7',
     ],
 )
